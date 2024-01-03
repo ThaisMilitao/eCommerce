@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'widget_tweaks',
     #Apps
     'catalog',
-
 ]
 
 MIDDLEWARE = [
@@ -53,6 +52,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 ROOT_URLCONF = 'eCommerce.urls'
 
@@ -128,6 +129,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
 	os.path.join(BASE_DIR, 'core/static')
 ]
+
+
+# EMAIL_HOST = ''
+# EMAIL_HOST_USER = ''
+# EMAIL_HOST_PASSWORD = ''
+DEFAULT_FROM_EMAIL = 'email@gmail.com'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

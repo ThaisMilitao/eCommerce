@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .models import Product, Category
 from .forms import ContactForm
+
 # Create your views here.
 def products_list(request):
     template_name = 'products.html'
@@ -26,13 +27,15 @@ def home(request):
     return render(request, 'index.html')
 
 def contact(request):
-    if request.method is 'POST':
-        form = ContactForm(request.POST)
-    else:
-        form = ContactForm()
-        
+    success = False
+    form = ContactForm(request.POST or None)
+    if form.is_valid():
+        form.send_mail()
+        success = True
+
     context={
         'form':form,
+        'success': success,
     }
     return render(request, 'contact.html', context)
 
