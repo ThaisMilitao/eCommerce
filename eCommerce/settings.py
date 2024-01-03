@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     #Libs    
     'widget_tweaks',
     #Apps
+    'commerce',
     'catalog',
 ]
 
