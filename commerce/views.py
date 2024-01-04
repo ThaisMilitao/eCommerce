@@ -1,9 +1,13 @@
+from typing import Any
 from django.shortcuts import render
 from .forms import ContactForm
+from django.views.generic import View, TemplateView
 
 # Create your views here.
-def home(request):
-    return render(request, 'index.html')
+class IndexView(TemplateView):
+    template_name = 'index.html'
+    
+home = IndexView.as_view()
 
 def contact(request):
     success = False

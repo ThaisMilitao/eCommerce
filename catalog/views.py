@@ -1,26 +1,31 @@
-from django.shortcuts import render
+from typing import Any
+from django.shortcuts import render, get_object_or_404
 from .models import Product, Category
 
+from django.views import generic
+
 # Create your views here.
-def products_list(request):
+
+class ProductListView(generic.ListView):
+    model = Product
     template_name = 'products.html'
-    products = Product.objects.all()
-    context = {
-        'products': products,
-    }   
-    return render(request,template_name, context)
+    context_object_name='products'
 
-
-def category_products(request, slug):
+class CategoryListView(generic.ListView):
     template_name = 'category_products.html'
-    category = Category.objects.get(slug=slug)
-    products = Product.objects.filter(category=category)
-    context = {
-        'current_category':category,
-        'products': products,
+    context_object_name = 'products'
+    
+    def get_queryset(self):
+        return Product.objects.filter(category__slug=self.kwargs['slug'])
 
-    }   
-    return render(request,template_name, context)
+    def get_context_data(self, **kwargs):
+        context = super(CategoryListView, self).get_context_data(**kwargs)
+        context['current_category'] = get_object_or_404(Category, slug=self.kwargs['slug'])
+        return context
+    
+
+products_list = ProductListView.as_view()
+category_products = CategoryListView.as_view()
 
 def product(request,slug):
     template_name = 'product.html'
