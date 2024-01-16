@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, FormView, TemplateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -37,6 +38,10 @@ class UpdatePasswordView(LoginRequiredMixin, FormView):
         kwargs = super(UpdatePasswordView, self).get_form_kwargs()
         kwargs['user'] = self.request.user
         return kwargs
+    
+    def form_valid(self, form):
+        form.save()
+        return super(UpdatePasswordView, self).form_valid(form)
 
 update_password = UpdatePasswordView.as_view()
 update_user = UpdateUserView.as_view()
