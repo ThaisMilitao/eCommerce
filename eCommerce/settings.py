@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'commerce',
     'catalog',
     'accounts',
+    'checkout',
+    
 
 ]
 
@@ -154,3 +156,9 @@ AUTHENTICATION_BACKENDS = (
         'django.contrib.auth.backends.ModelBackend',
         'accounts.backends.ModelBackend'
 )
+
+
+from django.contrib.messages import constants
+MESSAGE_TAGS = {
+    constants.ERROR: 'danger',
+}
