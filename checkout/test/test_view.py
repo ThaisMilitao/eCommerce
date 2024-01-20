@@ -3,6 +3,8 @@ from django.urls import reverse
 from model_mommy import mommy
 from checkout.models import CartItem
 
+from django.conf import settings
+
 class CreateCartItemTestCase(TestCase):
     def setUp(self):
       self.product = mommy.make('catalog.Product')
@@ -24,4 +26,23 @@ class CreateCartItemTestCase(TestCase):
         response = self.client.get(self.url)
         cart_item = CartItem.objects.get()
         self.assertEquals(cart_item.quantity, 2)
+
+class CheckoutViewTestCase(TestCase):
+  def setUp(self):
+    self.user = mommy.make(settings.AUTH_USER_MODEL)
+    self.user.set_password('123')
+    self.user.save()
+    self.cart_item = mommy.make(CartItem)
+    self.client = Client()
+    self.checkout_url = reverse('checkout:checkout')
+
+  def test_checkout_view(self):
+    response = self.client.get(self.checkout_url)
+    redirect_url = f"{reverse(settings.LOGIN_URL)}?next={self.checkout_url}"
+    self.assertRedirects(response, redirect_url)
+    self.client.login(username = self.user.username, password='123')
+    self.cart_item.cart_key = self.client.session.session_key
+    self.cart_item.save()
+    response = self.client.get(self.checkout_url)
+    self.assertTemplateUsed(response, 'checkout.html')
     
