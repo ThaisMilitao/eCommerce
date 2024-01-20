@@ -45,13 +45,13 @@ class Order(models.Model):
         (2,'Cancelada'),
     )
     PAYMENT_OPTION_CHOICES =(
-        ('deposit', 'Deposit')
+        ('deposit', 'Deposit'),
         ('pagseguro', 'PagSeguro'),
-        ('paypal', 'PayPal')
+        ('paypal', 'PayPal'),
     )
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name = 'User', on_delete=models.CASCADE)
     status = models.IntegerField('status', choices=STATUS_CHOICES, default=0, blank=True)
-    payment_option = models.CharField('Payment Option', choices=PAYMENT_OPTION_CHOICES, max_length=20, defaul='deposit')
+    payment_option = models.CharField('Payment Option', choices=PAYMENT_OPTION_CHOICES, max_length=20, default='deposit')
 
     created = models.DateTimeField('Created', auto_now_add=True)
     modified = models.DateTimeField('Modified', auto_now_add=True)
